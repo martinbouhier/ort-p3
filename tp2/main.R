@@ -1,7 +1,7 @@
 # install.packages("ggplot2")
-# install.packages("caTools")
+# install.packages("caret")
 library(ggplot2)
-library(caTools)
+library(caret)
 
 ### Step 1: Importar el juego de datos test ###
 
@@ -24,11 +24,13 @@ set.seed(123)
 
 # Dividir los datos en 70% para entrenamiento y 30% para prueba
 print("Dividiendo los datos en train y test donde el 70% de los datos son de entrenamienot y el 30% son de testeo")
-split <- sample.split(data$y, SplitRatio = 0.7)
+
+split <- createDataPartition(data$y, p = 0.7, list = FALSE)
+
 
 # Crear los datasets de entrenamiento y prueba
-train_data <- subset(data, split == TRUE)
-test_data <- subset(data, split == FALSE)
+train_data <- data[split, ]
+test_data <- data[-split, ]
 
 # Verificar las dimensiones de los conjuntos
 paste("Los datos de entrenamienot tienen:", dim(train_data)[1], "filas y", dim(train_data)[2], "columnas")  # Tamaño del conjunto de entrenamiento
@@ -53,9 +55,9 @@ print("Optimizando modelo de regresion lineal...")
 model <- lm(y ~ x, data = train_data)
 
 # Print the summary of the model
-print("Resumen del modelo: ")
+print("Resumen del modelo")
 print(summary(model))
-print("Fin resumen del modelo: ")
+print("Fin resumen del modelo")
 
 # Step 5 Usando la función predict para predecir la variable dependiente usando el modelo
 print("Prediciendo valores con datos de testeo")
@@ -65,7 +67,7 @@ test_data$predicted_y <- predict(model, newdata = test_data)
 #print(head(test_data))  # Muestra las primeras filas para verificar
 
 #Step 6 Graficar los datos y la línea de regresión con ggplot
-print("Graficando datos de testeo: ")
+print("Graficando datos de testeo")
 ggplot(test_data, aes(x = x, y = y)) +
   geom_point(color = "blue") +  # Puntos originales del conjunto de prueba
   geom_line(aes(y = predicted_y), color = "red") +  # Línea de las predicciones
