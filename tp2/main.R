@@ -1,5 +1,5 @@
-# Install and load the library if you don't have it
-# install.packages("ggplot2") # nolint
+# install.packages("ggplot2")
+# install.packages("caTools")
 library(ggplot2)
 library(caTools)
 
@@ -73,3 +73,4 @@ ggplot(test_data, aes(x = x, y = y)) +
        x = "Eje X",
        y = "Valores") +
   theme_minimal()
+
